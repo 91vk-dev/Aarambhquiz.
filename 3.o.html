@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="hi">
 <head>
@@ -369,7 +370,7 @@
     let adCodes = {};
     let quizHistory = [];
 
-    const sunIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.64 5.64c-.39-.39-1.02-.39-1.41 0-.39.39-.39 1.02 0 1.41l1.06 1.06c.39.39 1.02.39 1.41 0s.39-1.02 0-1.41L5.64 5.64zm12.73 12.73c-.39-.39-1.02-.39-1.41 0-.39.39-.39 1.02 0 1.41l1.06 1.06c.39.39 1.02.39 1.41 0s.39-1.02 0-1.41l-1.06-1.06zM5.64 18.36l-1.06-1.06c-.39-.39-.39-1.02 0-1.41s1.02-.39 1.41 0l1.06 1.06c.39.39.39 1.02 0 1.41s-1.02.39-1.41 0zm12.73-12.73l-1.06-1.06c-.39-.39-.39-1.02 0-1.41s1.02-.39 1.41 0l1.06 1.06c.39.39.39 1.02 0 1.41s-1.02.39-1.41 0z"/></svg>`;
+    const sunIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45 1 1zM5.64 5.64c-.39-.39-1.02-.39-1.41 0-.39.39-.39 1.02 0 1.41l1.06 1.06c.39.39 1.02.39 1.41 0s.39-1.02 0-1.41L5.64 5.64zm12.73 12.73c-.39-.39-1.02-.39-1.41 0-.39.39-.39 1.02 0 1.41l1.06 1.06c.39.39 1.02.39 1.41 0s.39-1.02 0-1.41l-1.06-1.06zM5.64 18.36l-1.06-1.06c-.39-.39-.39-1.02 0-1.41s1.02-.39 1.41 0l1.06 1.06c.39.39.39 1.02 0 1.41s-1.02.39-1.41 0zm12.73-12.73l-1.06-1.06c-.39-.39-.39-1.02 0-1.41s1.02-.39 1.41 0l1.06 1.06c.39.39.39 1.02 0 1.41s-1.02.39-1.41 0z"/></svg>`;
     const moonIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12.3 4.9c.4-.2.6-.7.4-1.1-.2-.4-.7-.6-1.1-.4C7.2 5.5 4 9.4 4 14c0 4.4 3.6 8 8 8 3.5 0 6.5-2.2 7.6-5.4.2-.4 0-.9-.4-1.1s-.9-.1-1.1.2c-.8 1.9-2.6 3.2-4.7 3.2-2.8 0-5-2.2-5-5 0-2.5 1.8-4.6 4.2-4.9z"/></svg>`;
     
     function applyTheme(theme) {
@@ -589,55 +590,37 @@
             snapshot.forEach(child => { quizQuestions.push({ id: child.key, ...child.val() }); });
             
             if (quizQuestions.length > 0) {
-                setTimeout(() => {
-                    quizContainer.innerHTML = `<div id="question-container" class="quiz-question"></div><ul id="options-container" class="list-container"></ul>`;
-                    navContainer.style.display = 'flex';
-                    userAnswers = new Array(quizQuestions.length).fill(null);
-                    currentQuestionIndex = 0; 
-                    showQuestion(currentQuestionIndex);
-                }, 3000); 
+                quizContainer.innerHTML = `<div id="question-container" class="quiz-question"></div><ul id="options-container" class="list-container"></ul>`;
+                navContainer.style.display = 'flex';
+                userAnswers = new Array(quizQuestions.length).fill(null);
+                currentQuestionIndex = 0; 
+                showQuestion(currentQuestionIndex);
             } else {
                  quizContainer.innerHTML = '<p>No questions found for this quiz.</p>';
             }
         }, err => { quizContainer.innerHTML = `<p>Error loading quiz: ${err.message}</p>`; });
     }
     
+    // [MODIFIED] Removed fake loading from showQuestion function
     function showQuestion(index) {
         const questionData = quizQuestions[index];
         const questionContainer = document.getElementById('question-container');
         const optionsContainer = document.getElementById('options-container');
 
-        if (questionContainer) {
-            questionContainer.innerHTML = '<h3>Loading Question...</h3>';
-        }
-        if (optionsContainer) {
-            optionsContainer.innerHTML = '';
-            optionsContainer.style.display = 'none'; 
-        }
+        if (!questionContainer || !optionsContainer) return;
 
-        setTimeout(() => {
-            if (questionContainer) {
-                questionContainer.innerHTML = `<h3>${questionData.question}</h3>`;
+        questionContainer.innerHTML = `<h3>${questionData.question}</h3>`;
+        
+        optionsContainer.innerHTML = '';
+        questionData.options.forEach((opt, i) => {
+            const li = document.createElement('li');
+            li.textContent = opt;
+            li.onclick = () => selectAnswer(i + 1);
+            if (userAnswers[index] === (i + 1)) {
+                li.classList.add('selected');
             }
-            
-            if (optionsContainer) {
-                optionsContainer.style.display = 'block'; 
-                optionsContainer.innerHTML = '<li>Loading options...</li>';
-
-                setTimeout(() => {
-                    optionsContainer.innerHTML = '';
-                    questionData.options.forEach((opt, i) => {
-                        const li = document.createElement('li');
-                        li.textContent = opt;
-                        li.onclick = () => selectAnswer(i + 1);
-                        if (userAnswers[index] === (i + 1)) {
-                            li.classList.add('selected');
-                        }
-                        optionsContainer.appendChild(li);
-                    });
-                }, 3000);
-            }
-        }, 3000); 
+            optionsContainer.appendChild(li);
+        });
 
         const progress = ((index + 1) / quizQuestions.length) * 100;
         document.getElementById('quiz-progress-bar').style.width = `${progress}%`;
@@ -649,54 +632,33 @@
     function selectAnswer(optionIndex) {
         userAnswers[currentQuestionIndex] = optionIndex;
         const optionsContainer = document.getElementById('options-container');
-        const questionData = quizQuestions[currentQuestionIndex];
-        if (optionsContainer && questionData) {
-            optionsContainer.innerHTML = '';
-            questionData.options.forEach((opt, i) => {
-                const li = document.createElement('li');
-                li.textContent = opt;
-                li.onclick = () => selectAnswer(i + 1);
-                if (userAnswers[currentQuestionIndex] === (i + 1)) {
-                    li.classList.add('selected');
-                }
-                optionsContainer.appendChild(li);
-            });
-        }
+        // Re-render options to show selection
+        optionsContainer.querySelectorAll('li').forEach((li, i) => {
+            if ((i + 1) === optionIndex) {
+                li.classList.add('selected');
+            } else {
+                li.classList.remove('selected');
+            }
+        });
     }
 
+    // [MODIFIED] Removed fake loading from nextQuestion function
     function nextQuestion() {
         if (currentQuestionIndex < quizQuestions.length - 1) {
-            const quizContainer = document.getElementById('quiz-container');
-            if (quizContainer) {
-                quizContainer.innerHTML = '<p style="text-align:center;">Loading next question...</p>';
-            }
-            setTimeout(() => {
-                if (quizContainer) {
-                     quizContainer.innerHTML = `<div id="question-container" class="quiz-question"></div><ul id="options-container" class="list-container"></ul>`;
-                }
-                injectAd('quiz-page-ad-container', adCodes.quizPageAd);
-                currentQuestionIndex++;
-                showQuestion(currentQuestionIndex);
-            }, 1500); 
+            injectAd('quiz-page-ad-container', adCodes.quizPageAd);
+            currentQuestionIndex++;
+            showQuestion(currentQuestionIndex);
         } else {
             calculateScore();
         }
     }
 
+    // [MODIFIED] Removed fake loading from prevQuestion function
     function prevQuestion() {
         if (currentQuestionIndex > 0) {
-            const quizContainer = document.getElementById('quiz-container');
-            if (quizContainer) {
-                quizContainer.innerHTML = '<p style="text-align:center;">Loading previous question...</p>';
-            }
-            setTimeout(() => {
-                if (quizContainer) {
-                    quizContainer.innerHTML = `<div id="question-container" class="quiz-question"></div><ul id="options-container" class="list-container"></ul>`;
-                }
-                injectAd('quiz-page-ad-container', adCodes.quizPageAd);
-                currentQuestionIndex--;
-                showQuestion(currentQuestionIndex);
-            }, 1500);
+            injectAd('quiz-page-ad-container', adCodes.quizPageAd);
+            currentQuestionIndex--;
+            showQuestion(currentQuestionIndex);
         }
     }
     
